@@ -13,15 +13,18 @@ RUN apk add --no-cache \
 COPY frontend/package*.json ./
 
 # Install dependencies
-# Use npm ci for faster, reliable, reproducible builds
-RUN npm ci && npm cache clean --force
+# Use npm install to handle potential lock file issues
+RUN npm install && npm cache clean --force
 
 # Copy source code
 COPY frontend/ .
 
 # Build the application with production optimizations
 ENV NODE_ENV=production
-RUN npm run build
+# Fix permissions for node_modules/.bin and run build
+# Use npx to ensure proper execution of binaries
+RUN chmod -R +x node_modules/.bin 2>/dev/null || true && \
+    npx tsc && npx vite build
 
 # Production stage
 FROM nginx:alpine AS production
