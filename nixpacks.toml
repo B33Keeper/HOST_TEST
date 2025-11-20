@@ -1,0 +1,15 @@
+# Nixpacks configuration for Railway
+# This tells Railway to use Docker instead of Nixpacks
+
+[phases.setup]
+nixPkgs = ["nodejs-18_x"]
+
+[phases.install]
+cmds = ["echo 'Using Dockerfile instead of Nixpacks'"]
+
+[phases.build]
+cmds = ["echo 'Build handled by Dockerfile'"]
+
+[start]
+cmd = "echo 'Start command handled by Dockerfile'"
+
