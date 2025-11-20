@@ -38,6 +38,9 @@ RUN apk add --no-cache \
 # Copy package files
 COPY backend/package*.json ./
 
+# Copy package-lock.json from builder stage (where it's in sync)
+COPY --from=builder /app/package-lock.json ./
+
 # Install only production dependencies
 RUN npm ci --omit=dev && npm cache clean --force
 
