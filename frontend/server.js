@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const BACKEND_URL = process.env.BACKEND_URL || process.env.API_BASE_URL || 'http://localhost:3001';
 
 // Security middleware
 app.use(helmet({
@@ -19,7 +20,7 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
       scriptSrc: ["'self'"],
-      connectSrc: ["'self'", "http://localhost:3001"],
+      connectSrc: ["'self'", BACKEND_URL],
       frameSrc: ["'none'"],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
@@ -79,6 +80,11 @@ app.use(express.static(path.join(__dirname, 'dist'), {
   etag: true,
   lastModified: true,
 }));
+
+// Health check endpoint for Railway
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 
 // Handle client-side routing
 app.get('*', (req, res) => {
