@@ -87,7 +87,7 @@ async function bootstrap() {
     // CORS configuration
     const corsOrigin = configService.get('CORS_ORIGIN');
     const allowedOrigins = corsOrigin 
-      ? corsOrigin.split(',').map(origin => origin.trim())
+      ? corsOrigin.split(',').map((origin: string) => origin.trim())
       : ['http://localhost:3000', 'http://localhost:5173'];
     
     app.use(cors({
